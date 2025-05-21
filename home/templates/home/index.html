@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | {{ user.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+
+
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body oncontextmenu="return false">
+
+<!-- Navbar -->
+<header data-aos="fade-down">
+    <a href="/" class="logo">
+  <img src="{% static 'images/hero2.png' %}" alt="Profile Picture" style="height: 40px; vertical-align: middle;">
+  {{ user.first_name }}
+</a>
+
+
+    <div id="menu" class="fas fa-bars"></div>
+    <nav class="navbar">
+        <ul>
+            <li><a class="active" href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Home Section -->
+<section class="home" id="home" data-aos="fade-up">
+    <div class="content" data-aos="fade-right">
+        <h2>Hi, I'm <span>{{ user.full_name }}</span></h2>
+        <p>Aspiring <span class="typing-text"></span></p>
+        <a href="#about" class="btn"><span>About Me</span> <i class="fas fa-arrow-down"></i></a>
+        <ul class="social-icons">
+            {% if user.linkedin %}<li><a href="{{ user.linkedin }}"><i class="fab fa-linkedin"></i></a></li>{% endif %}
+            {% if user.github %}<li><a href="{{ user.github }}"><i class="fab fa-github"></i></a></li>{% endif %}
+            {% if user.instagram %}<li><a href="{{ user.instagram }}"><i class="fab fa-instagram"></i></a></li>{% endif %}
+        </ul>
+    </div>
+    <div class="image" data-aos="fade-left">
+        <img src="{% static 'images/hero2.png' %}" alt="Profile Picture">
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about" id="about" data-aos="fade-up">
+    <h2 class="heading">About <span>Me</span></h2>
+    <div class="row">
+        <div class="image" data-aos="zoom-in-right">
+            <img src="{% static 'images/hi.png' %}" alt="">
+        </div>
+        <div class="content" data-aos="fade-left">
+            <h3>I'm {{ user.first_name }}</h3>
+            <span class="tag">Data Science Enthusiast</span>
+            <p>{{ user.about }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Location:</strong> {{ user.location }}</p>
+            <a href="{{ user.resume_url }}" class="btn" target="_blank"><span>Resume</span> <i class="fas fa-download"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Skills -->
+<section class="skills" id="skills" data-aos="fade-up">
+    <h2 class="heading">Skills & <span>Tools</span></h2>
+    <div class="container">
+        <div class="row" id="skillsContainer">
+            {% for skill in skills %}
+            <div class="bar" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+                <div class="info">
+                    <i class="{{ skill.icon }} colored"></i>
+                    <span>{{ skill.name }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Education Section -->
+<section class="education" id="education" data-aos="fade-up">
+
+  <h1 class="heading"><i class="fas fa-graduation-cap"></i> My <span>Education</span></h1>
+
+  <div class="box-container">
+    {% for edu in education %}
+    <div class="box" data-aos="flip-left" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+      <div class="content">
+        <h3>{{ edu.degree }}</h3>
+        <p>{{ edu.institution }}</p>
+        <h4>{{ edu.year }}</h4>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</section>
+
+
+<!-- Projects -->
+<section class="projects" id="projects" data-aos="fade-up">
+    <h2 class="heading">My <span>Projects</span></h2>
+    <div class="box-container">
+        {% for project in projects %}
+        <div class="box" data-aos="zoom-in-up" data-aos-delay="{{ forloop.counter0|add:'1' }}00">
+           <img src="{{ project.image_url }}" alt="{{ project.title }} Image" class="project-image">
+
+           <h3>{{ project.title }}</h3>
+            <p>{{ project.description }}</p>
+            <div class="btns">
+                <a href="{{ project.demo_url }}" class="btn" target="_blank">View</a>
+                <a href="{{ project.code_url }}" class="btn" target="_blank">Code</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="contact" id="contact" data-aos="fade-up">
+  <h2 class="heading"><i class="fas fa-headset"></i> Get in <span>Touch</span></h2>
+
+  <div class="container" style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
+    <div class="image-box" style="flex: 1; min-width: 300px;">
+      <img draggable="false" src="{% static 'images/contact1.png' %}" alt="Contact Image" style="width: 100%; height: auto;">
+    </div>
+
+    <form method="post" action="#" id="contact-form" data-aos="zoom-in" style="flex: 1; min-width: 300px;">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <div class="field">
+          <i class="fas fa-user"></i>
+          <input type="text" name="name" placeholder="Name" required>
+          
+        </div>
+        <div class="field">
+          <i class="fas fa-envelope"></i>
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="field">
+          <i class="fas fa-phone-alt"></i>
+          <input type="text" name="phone" placeholder="Phone">
+        </div>
+        <div class="message">
+          <i class="fas fa-comment-dots"></i>
+          <textarea name="message" placeholder="Message" required></textarea>
+          
+        </div>
+        {% if success %}
+        <div style="color: green; padding: 10px; margin-top: 10px;">
+          ✅ Your message has been submitted successfully, Jaya!
+        </div>
+        {% endif %}
+
+      </div>
+
+      <div class="button-area">
+        <button type="submit" class="btn">
+          <span>Send Message</span> <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- AOS Animation JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script>
+  var typed = new Typed(".typing-text", {
+    strings: ["Data Science Enthusiast", "Python Programmer", "AI & ML Explorer", "Learner"],
+    loop: true,
+    typeSpeed: 50,
+    backSpeed: 25,
+    backDelay: 500,
+  });
+</script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true
+  });
+</script>
+
+</body>
+</html>
+  
