@@ -40,3 +40,15 @@ This is my personal portfolio website built using Django. It demonstrates my web
 
     ```bash
     http://127.0.0.1:8000/
+
+## Output Samples
+
+Here are some screenshots of the project in action:
+
+![Output Sample 1](output/output1.png)
+
+![Output Sample 1](output/output2.png)
+
+![Output Sample 1](output/output3.png)
+
+
